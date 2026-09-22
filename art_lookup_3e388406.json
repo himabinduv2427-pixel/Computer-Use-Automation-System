@@ -1,0 +1,158 @@
+{
+  "artifact_id": "art_lookup_3e388406",
+  "capability_name": "lookup_member_savings",
+  "capability_description": "Search for a member and read their savings balance",
+  "goal": "Look up member and read their current savings balance",
+  "input_schema": {
+    "member_id": {
+      "type": "string",
+      "description": "Member ID to look up",
+      "required": true
+    }
+  },
+  "output_schema": {
+    "member_found": {
+      "type": "boolean",
+      "description": "Whether member was found"
+    },
+    "savings_balance": {
+      "type": "string",
+      "description": "Current savings balance"
+    }
+  },
+  "steps": [
+    {
+      "step_id": "step_1_search_button",
+      "description": "Click Member Search button",
+      "actions": [
+        {
+          "action_type": "click",
+          "locator": {
+            "type": "accessibility",
+            "value": "Member Search",
+            "fallbacks": [],
+            "description": ""
+          },
+          "value": null,
+          "wait_condition": null,
+          "reasoning": "Open search dialog"
+        }
+      ],
+      "expected_state": {
+        "search_modal_open": true
+      },
+      "expected_outputs": null,
+      "error_handlers": {}
+    },
+    {
+      "step_id": "step_2_enter_id",
+      "description": "Enter member ID",
+      "actions": [
+        {
+          "action_type": "type",
+          "locator": {
+            "type": "css_selector",
+            "value": "input[placeholder='Enter Member ID']",
+            "fallbacks": [],
+            "description": ""
+          },
+          "value": "{member_id}",
+          "wait_condition": null,
+          "reasoning": "Enter member ID to search"
+        }
+      ],
+      "expected_state": {
+        "input_has_value": true
+      },
+      "expected_outputs": null,
+      "error_handlers": {}
+    },
+    {
+      "step_id": "step_3_search",
+      "description": "Execute search",
+      "actions": [
+        {
+          "action_type": "click",
+          "locator": {
+            "type": "css_selector",
+            "value": "button:contains('Search')",
+            "fallbacks": [],
+            "description": ""
+          },
+          "value": null,
+          "wait_condition": null,
+          "reasoning": "Execute search query"
+        }
+      ],
+      "expected_state": {
+        "results_displayed": true
+      },
+      "expected_outputs": null,
+      "error_handlers": {
+        "member_not_found": "Return business outcome"
+      }
+    },
+    {
+      "step_id": "step_4_view_details",
+      "description": "Click member result",
+      "actions": [
+        {
+          "action_type": "click",
+          "locator": {
+            "type": "css_selector",
+            "value": "[data-testid='member-result']",
+            "fallbacks": [],
+            "description": ""
+          },
+          "value": null,
+          "wait_condition": null,
+          "reasoning": "Open member account page"
+        }
+      ],
+      "expected_state": {
+        "member_detail_page": true
+      },
+      "expected_outputs": null,
+      "error_handlers": {}
+    },
+    {
+      "step_id": "step_5_read_balance",
+      "description": "Read savings balance",
+      "actions": [
+        {
+          "action_type": "read",
+          "locator": {
+            "type": "css_selector",
+            "value": "[data-account-type='savings'] .balance",
+            "fallbacks": [],
+            "description": ""
+          },
+          "value": null,
+          "wait_condition": null,
+          "reasoning": "Extract savings balance"
+        }
+      ],
+      "expected_state": {
+        "balance_visible": true
+      },
+      "expected_outputs": {
+        "savings_balance": "string"
+      },
+      "error_handlers": {}
+    }
+  ],
+  "version": "1.0.0",
+  "created_at": "2026-09-22T02:36:56.489488",
+  "tenant_id": "",
+  "tags": [
+    "member-lookup",
+    "savings",
+    "demo"
+  ],
+  "allowed_domains": [
+    "localhost",
+    "bank.local"
+  ],
+  "reversible": true,
+  "requires_confirmation": false
+}
